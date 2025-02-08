@@ -191,6 +191,7 @@ void json_write(FILE *file, json obj, size_t indent) {
         __INDENT__(1);
         fprintf(file, "]");
       } else if (value->value) {
+        __INDENT__(1);
         fprintf(file, "%s", value->value);
       }
 
