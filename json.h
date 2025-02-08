@@ -1,54 +1,8 @@
 #ifndef JWC_JSON
 #define JWC_JSON
 
-#include <stdio.h>
+#include "core.h"
 #include <ctype.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-
-#ifndef JWC_BOOL
-#define JWC_BOOL
-
-#ifndef bool
-#define bool int
-#endif
-
-#ifndef true
-#define true 1
-#endif
-
-#ifndef false
-#define false 0
-#endif
-
-#endif
-
-#ifndef JWC_REQUIRE
-#define JWC_REQUIRE
-
-#define require(CONDITION, DOMAIN, ...) do { \
-  if (!(CONDITION)) { \
-    fprintf(stderr, "[%s] ", DOMAIN); \
-    fprintf(stderr, __VA_ARGS__); \
-    fprintf(stderr, "\n"); \
-    exit(1); \
-  } \
-} while (0)
-
-#endif
-
-#ifndef JWC_LIST
-#define JWC_LIST
-
-#define list_define(TYPENAME, TYPE) \
-typedef struct TYPENAME { \
-  TYPE *data; \
-  size_t size; \
-  size_t capacity; \
-} typename
-
-#endif
 
 typedef struct json_t *json;
 
@@ -70,25 +24,7 @@ str_list json_properties(json);
 json_list json_elements(json);
 size_t json_size(json);
 
-
 #ifdef JWC_IMPLEMENTATION
-
-#ifndef JWC_LIST
-#define JWC_LIST
-
-#define list_delete(LIST) do { free((LIST).data); (LIST).data = null; (LIST).size = (LIST).capacity = 0; } while (0)
-
-#define list_append(LIST, ELEMENT) \
-do { \
-  if ((LIST).capacity <= (LIST).size) { \
-    (LIST).capacity = (size_t) (((LIST).capacity + 1) * 1.5F); \
-    (LIST).data = realloc((LIST).data, (LIST).capacity * sizeof(*(LIST).data)); \
-  } \
-  \
-  (LIST).data[(LIST).size++] = (ELEMENT); \
-} while (0)
-
-#endif
 
 struct json_t {
   str_list properties;
