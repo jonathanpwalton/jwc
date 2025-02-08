@@ -78,9 +78,9 @@ typedef double f64;
                                   (ptr + pos + n) ------> (ptr + size)
 */
 void *ptrslice(const void *ptr, size_t size, size_t pos, size_t n) {
-  void *result = malloc(size - n);
-  memcpy(result, ptr, pos);
-  memcpy(result + pos, ptr + pos + n, size - pos - n);
+  char *result = malloc(size - n);
+  memcpy(result, (char *) ptr, pos);
+  memcpy(result + pos, (char *) ptr + pos + n, size - pos - n);
   return result;
 }
 
@@ -104,7 +104,7 @@ typedef struct TYPENAME { \
   TYPE *data; \
   size_t size; \
   size_t capacity; \
-} TYPENAME;
+} TYPENAME
 
 #define list_create(TYPENAME, IDENTIFIER) TYPENAME IDENTIFIER = {0}
 #define list_delete(LIST) do { free((LIST).data); (LIST).data = null; (LIST).size = (LIST).capacity = 0; } while (0)
@@ -115,7 +115,7 @@ typedef struct TYPENAME { \
 do { \
   if ((LIST).capacity <= (LIST).size) { \
     (LIST).capacity = (size_t) (((LIST).capacity + 1) * 1.5F); \
-    (LIST).data = realloc((LIST).data, (LIST).capacity); \
+    (LIST).data = realloc((LIST).data, (LIST).capacity * sizeof(*(LIST).data)); \
   } \
   \
   (LIST).data[(LIST).size++] = (ELEMENT); \
